@@ -4,8 +4,9 @@ class Config:
     APP_NAME = "Routing App"
     TEMPLATE_FOLDER = "templates/"
     STATIC_FOLDER = "static_folder/"
-    
+    DESCRIPTION = "Aplicación para practicar routing en Flask"
     DEVELOPERS = [
         {"nombre": "Carlos", "apellido": "Santana"},
         {"nombre": "James", "apellido": "Hetfield"}
     ]
+    VERSION = "1.0.0"

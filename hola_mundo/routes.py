@@ -11,7 +11,7 @@ def index():
 def info():
     return jsonify( f"Bienvenidx a {current_app.config['APP_NAME']}"),200
 
-@app.route("/about")
+@app.route('/about')
 def about():
     app_info = {
         "app_name": current_app.config['APP_NAME'],
@@ -21,5 +21,8 @@ def about():
     }
     return jsonify(app_info)
     
-  
+@app.route("/sum/<int:num1>/<int:num2>")
+def sum_numbers(num1, num2):
+    result = num1 + num2
+    return jsonify({"result": result})  
     
