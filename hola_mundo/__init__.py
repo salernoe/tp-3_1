@@ -171,7 +171,7 @@ def init_app():
     
     
     @app.route("/format")
-    #  ejercicio 9 convierte los parámetros de consulta (query params) firstname, lastname y dob etc
+    #  ejercicio 10 convierte los parámetros de consulta (query params) firstname, lastname y dob etc
     # ejemplo /format?firstname=LUiS&lastname=JUARez&dob=2001-08-27&dni=44.010.777
     
     def format_user_data():
