@@ -1,6 +1,7 @@
 from flask import render_template, request,Flask,jsonify, current_app, Blueprint
 from config import Config
 from datetime import datetime
+import re
 
 def init_app():
     
@@ -130,5 +131,41 @@ def init_app():
     def format_title(word):
         formatted_word = word.title()
         return jsonify({"formatted_word": formatted_word})
+   
+   
+    
+    #  ejecicio 8 convierte dni a numero entero 
+    # ejemplo /formatted/23.456.007
+    
+    
+    
+    def validate_dni_format(dni):
+    # Elimina puntos y guiones del DNI
+        dni = dni.replace(".", "").replace("-", "")
+    
+    # Verifica si el DNI contiene solo dígitos y tiene una longitud válida
+        if not dni.isdigit() or len(dni) != 8:
+            return False
+        return True
+
+    def convert_dni_to_integer(dni):
+        dni = dni.replace(".", "").replace("-", "")  # Elimina puntos y guiones del DNI
+        
+        if not validate_dni_format(dni):
+            return None
+        
+        return int(dni)
+   
+   
+   
+    @app.route("/formatted/<string:dni>")
+    def formatted_dni(dni):
+        integer_dni = convert_dni_to_integer(dni)
+        
+        if integer_dni is None:
+            return jsonify({"error": "Formato de DNI no válido"}), 400
+        
+        return jsonify({"formatted_dni": integer_dni})   
+   
    
     return app
