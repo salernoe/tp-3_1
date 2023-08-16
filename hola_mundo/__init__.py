@@ -168,4 +168,38 @@ def init_app():
         return jsonify({"formatted_dni": integer_dni})   
    
    
+    
+    
+    @app.route("/format")
+    #  ejercicio 9 convierte los parámetros de consulta (query params) firstname, lastname y dob etc
+    # ejemplo /format?firstname=LUiS&lastname=JUARez&dob=2001-08-27&dni=44.010.777
+    
+    def format_user_data():
+        firstname = request.args.get("firstname").capitalize()
+        lastname = request.args.get("lastname").capitalize()
+        dob = request.args.get("dob")
+        dni = request.args.get("dni")
+        
+        if not validate_dni_format(dni):
+            return jsonify({"error": "Formato de DNI no válido"}), 400
+        
+        integer_dni = convert_dni_to_integer(dni)
+        
+        if integer_dni is None:
+            return jsonify({"error": "Formato de DNI no válido"}), 400
+        
+        # Cálculo de la edad en base a la fecha de nacimiento
+        dob_date = datetime.strptime(dob, "%Y-%m-%d")
+        current_date = datetime.now()
+        age = current_date.year - dob_date.year - ((current_date.month, current_date.day) < (dob_date.month, dob_date.day))
+        
+        response_data = {
+            "firstname": firstname,
+            "lastname": lastname,
+            "age": age,
+            "dni": integer_dni
+        }
+        
+        return jsonify(response_data)
+    
     return app
