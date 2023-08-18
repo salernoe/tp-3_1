@@ -124,7 +124,7 @@ def init_app():
         return jsonify({"result": result})
    
     @app.route("/title/<string:word>")
-    #crear una ruta para en el endpoint /title/<string:word>, el cual aplica el 
+    # ejercicio 8 Definir un endpoint que convierta una palabra en formato título.crear una ruta para en el endpoint /title/<string:word>, el cual aplica el 
     #formato título al parámetro de ruta word
     # ejemplo /title/SARmienTo
     
@@ -134,7 +134,7 @@ def init_app():
    
    
     
-    #  ejecicio 8 convierte dni a numero entero 
+    #  ejecicio 9 convierte dni a numero entero 
     # ejemplo /formatted/23.456.007
     
     
