@@ -204,6 +204,8 @@ def init_app():
         
         return jsonify(response_data)
     
+   #ejercico 11 traductoer  te tecto a codigo morce 
+   #ejemplo /encode/hola+mundo
    
     
     with open('hola_mundo/morse_code.json') as f:
@@ -225,13 +227,94 @@ def init_app():
         encoded = encode_to_morse(keyword)
         return jsonify({'morse_code': encoded})
 
+    # ejercico n°12 comvierte el codigo mosrce a texto 
+    #/decode/-...+..-+.+-.+.-+...+^+-+.-+.-.+-..+.+...
 
+    
+    def decode_morse(morse_code):
+       
+        inverse_morse_data = {value: key for key, value in morse_data['letters'].items()}
 
+        
+        words = morse_code.split('+')
+        decoded_words = []
+
+        for word in words:
+            letters = word.split('^')
+            decoded_letters = []
+
+            for letter in letters:
+                if letter in inverse_morse_data:
+                    decoded_letters.append(inverse_morse_data[letter])
+            
+            decoded_words.append(''.join(decoded_letters))
+        
+        return ' '.join(decoded_words)
+
+    @app.route('/decode/<string:morse_code>', methods=['GET'])
+    def decode_endpoint(morse_code):
+        decoded_text = decode_morse(morse_code)
+        response = {'decoded_text': decoded_text}
+        return jsonify(response), 200
+
+    #ejercico n°13 Este código define un nuevo endpoint /convert/binary/<string:num> que toma 
+    # un número binario como parámetro de ruta y devuelve el número en decimal
+    # ejemplo /convert/binary/10101010
+
+    def binary_to_decimal(binary_num):
+        decimal_num = 0
+        length = len(binary_num)
+
+        for i, digit in enumerate(binary_num):
+            if digit == '1':
+                decimal_num += 2 ** (length - 1 - i)
+        
+        return decimal_num
+
+    @app.route('/convert/binary/<string:num>', methods=['GET'])
+    def convert_binary_to_decimal(num):
+        try:
+            decimal_result = binary_to_decimal(num)
+            response = {'decimal_result': decimal_result}
+            return jsonify(response), 200
+        except ValueError:
+            return jsonify({'error': 'Invalid binary number'}), 400
+    
+    
+    #ejercico n°14 Crear un endpoint que acepte una cadena como parámetro de ruta, como puede ser, 
+    #/balance/<string:input>. Este parámetro contendrá una serie de paréntesis, corchetes 
+    #llaves y llaves. El endpoint debe devolver un objeto JSON con la propiedad balanced que 
+    #indique si la cadena es balanceada o no.
+    # ejemplo /balance/{[()]}  
 
     
     
     
-    
+    def is_balanced(expression):
+        stack = []
+        opening_symbols = '([{'
+        closing_symbols = ')]}'
+        symbol_pairs = {')': '(', ']': '[', '}': '{'}
+        
+        for symbol in expression:
+            if symbol in opening_symbols:
+                stack.append(symbol)
+            elif symbol in closing_symbols:
+                if not stack or stack[-1] != symbol_pairs[symbol]:
+                    return False
+                stack.pop()
+        
+        return not stack
+
+    @app.route('/balance/<string:input>', methods=['GET'])
+    def check_balance(input):
+        if is_balanced(input):
+            response = {'balanced': True}
+        else:
+            response = {'balanced': False}
+        
+        return jsonify(response)
+        
     
     
     
