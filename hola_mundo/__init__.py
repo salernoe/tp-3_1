@@ -205,8 +205,8 @@ def init_app():
         return jsonify(response_data)
     
    
-    with open(os.path.join(os.path.dirname(__file__), 'morse_code.json')) as f:
-    #with open('static/morse_code.json') as f:
+    
+    with open('hola_mundo/morse_code.json') as f:
         morse_data = json.load(f)
 
     morse_letters = morse_data['letters']
@@ -215,7 +215,7 @@ def init_app():
         encoded = []
         for char in keyword:
             if char == '+':
-                encoded.append('^')  # Cambiar el carácter "+" por "^"
+                encoded.append('^')  
             elif char in morse_letters:
                 encoded.append(morse_letters[char])
         return '+'.join(encoded)
