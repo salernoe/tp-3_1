@@ -2,6 +2,8 @@ from flask import render_template, request,Flask,jsonify, current_app, Blueprint
 from config import Config
 from datetime import datetime
 import re
+import json
+import os
 
 def init_app():
     
@@ -201,5 +203,37 @@ def init_app():
         }
         
         return jsonify(response_data)
+    
+   
+    with open(os.path.join(os.path.dirname(__file__), 'morse_code.json')) as f:
+    #with open('static/morse_code.json') as f:
+        morse_data = json.load(f)
+
+    morse_letters = morse_data['letters']
+    
+    def encode_to_morse(keyword):
+        encoded = []
+        for char in keyword:
+            if char == '+':
+                encoded.append('^')  # Cambiar el carácter "+" por "^"
+            elif char in morse_letters:
+                encoded.append(morse_letters[char])
+        return '+'.join(encoded)
+    
+    @app.route('/encode/<string:keyword>')
+    def encode_keyword(keyword):
+        encoded = encode_to_morse(keyword)
+        return jsonify({'morse_code': encoded})
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
     
     return app
